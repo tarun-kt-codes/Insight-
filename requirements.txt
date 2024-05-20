@@ -1,0 +1,6 @@
+Flask
+PyPDF2
+llama-index
+llama-cpp
+huggingface-embedding
+werkzeug
