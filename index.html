@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insight!</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2575fc;
+        }
+        .form-group label {
+            color: #333;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Insight!</h1>
+
+    <form id="uploadForm" class="mb-4">
+        <div class="form-group">
+            <label for="pdfFile">Upload PDF</label>
+            <input type="file" class="form-control-file" id="pdfFile" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Load PDF</button>
+    </form>
+
+    <form id="queryForm" class="mb-4">
+        <div class="form-group">
+            <label for="question">Ask a Question</label>
+            <input type="text" class="form-control" id="question" placeholder="Type your question..." required>
+        </div>
+        <button type="submit" class="btn btn-success btn-block">Get Answer</button>
+    </form>
+
+    <div class="result" id="result"></div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.getElementById('uploadForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('pdfFile');
+        const formData = new FormData();
+        formData.append('pdf_path', fileInput.files[0]);
+
+        fetch('/index-pdf', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    document.getElementById('queryForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const question = document.getElementById('question').value;
+
+        fetch(`/get-answers?question=${encodeURIComponent(question)}`)
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('result').innerText = data.answer;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+</body>
+</html>
