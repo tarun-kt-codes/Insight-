@@ -19,7 +19,7 @@ Insight is a powerful chatbot that indexes PDF documents and provides intelligen
 1. **Clone the repository:**
 
     ```sh
-    git clone https://github.com/yourusername/your-repository-name.git
+    git clone https://github.com/tarun-kt-codes/Insight.git
     cd your-repository-name
     ```
 
